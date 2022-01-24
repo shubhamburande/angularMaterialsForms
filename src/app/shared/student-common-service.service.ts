@@ -18,12 +18,12 @@ export class StudentCommonService {
 
   private subjectName = new Subject<any>();
 
-  sendUpdate(message: any) { //the component that wants to update something, calls this fn
-    this.subjectName.next(message); //next() will feed the value in Subject
+  sendUpdate(data: any) {
+    this.subjectName.next(data);
   }
 
-  getUpdate(): Observable<any> { //the receiver component calls this function 
-    return this.subjectName.asObservable(); //it returns as an observable to which the receiver funtion will subscribe
+  getUpdate(): Observable<any> {
+    return this.subjectName.asObservable();
   }
 
   StudentForm: FormGroup = new FormGroup({
@@ -61,11 +61,8 @@ export class StudentCommonService {
       this.studentsList = {}
     }
 
-    // let id: Guid;
-    // id = Guid.create(); // ==> b77d409a-10cd-4a47-8e94-b0cd0ab50aa1
     localStorage.getItem('students');
     let akey = Math.random() * 100000000000000000;
-    // console.log(a)
     this.studentsList[akey] =
     {
       key: akey,
@@ -98,16 +95,6 @@ export class StudentCommonService {
       DOB: student.DOB == "" ? "" : this.datePipe.transform(student.DOB, 'yyyy-MM-dd')
     }
     localStorage.setItem('students', JSON.stringify(this.studentsList))
-    // this.studentsList.update(student.key,
-    //   {
-    //     fullName: student.fullName,
-    //     email: student.email,
-    //     phone: student.phone,
-    //     city: student.city,
-    //     gender: student.gender,
-    //     branch: student.branch,
-    //     DOB: student.DOB == "" ? "" : this.datePipe.transform(student.DOB, 'yyyy-MM-dd')
-    //   });
   }
 
   deleteStudent(key: string) {
@@ -121,7 +108,6 @@ export class StudentCommonService {
     delete this.studentsList[key]
     localStorage.setItem('students', JSON.stringify(this.studentsList))
     this.sendUpdate(JSON.parse(localStorage.getItem('students')))
-    // this.studentsList.remove(key);
   }
 
   populateForm(row) {
